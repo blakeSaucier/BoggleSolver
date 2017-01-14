@@ -10,7 +10,7 @@ public class BoardTests {
     public void BoardCanBeCreatedFromSquareString() {
         Board board = Board.fromString("ABCD");
 
-        assertEquals(2, board.getSize());
+        assertEquals(2, board.size());
         assertEquals('A', board.getLetter(0, 0));
         assertEquals('B', board.getLetter(0, 1));
         assertEquals('C', board.getLetter(1, 0));

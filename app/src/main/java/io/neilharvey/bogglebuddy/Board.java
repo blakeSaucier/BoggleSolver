@@ -21,7 +21,7 @@ public class Board {
         return board;
     }
 
-    public int getSize() {
+    public int size() {
         return size;
     }
 
