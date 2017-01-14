@@ -11,8 +11,6 @@ public class WordFinderTests {
     @Test
     public void findsAllStringPermutationsInBoard() {
         char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
-        Dictionary dictionary = new AllStringsAreWordsDictionary();
-        WordFinder finder = new WordFinder(dictionary);
         String[] expected = {
                 "A", "B", "C", "D",
                 "AB", "AC", "AD", "BA", "BC", "BD", "CA", "CB", "CD", "DA", "DB", "DC",
@@ -24,16 +22,20 @@ public class WordFinderTests {
                 "DABC", "DACB", "DBAC", "DBCA", "DCAB", "DCBA"
         };
 
-        String[] results = finder.findWords(board);
+        String[] results = findAllWords(board);
 
-        Arrays.sort(expected);
-        Arrays.sort(results);
-        assertArrayEquals(expected, results);
+        assertItemsEqual(expected, results);
     }
 
-//    @Test
-//    public void onlyDistinctStringsAreReturned() {
-//    }
+    @Test
+    public void onlyDistinctStringsAreReturned() {
+        char[][] board = new char[][]{{'A', 'A'}, {'A', 'A'}};
+        String[] expected = {"A", "AA", "AAA", "AAAA" };
+
+        String[] results = findAllWords(board);
+
+        assertItemsEqual(expected, results);
+    }
 //
 //    @Test
 //    public void onlyStringsLongerThanMinLengthAreReturned() {;
@@ -43,6 +45,19 @@ public class WordFinderTests {
 //    public void onlyWordsInDictionaryAreReturned() {
 //
 //    }
+
+
+    private static void assertItemsEqual(String[] expected, String[] results) {
+        Arrays.sort(expected);
+        Arrays.sort(results);
+        assertArrayEquals(expected, results);
+    }
+
+    private String[] findAllWords(char[][] board) {
+        Dictionary dictionary = new AllStringsAreWordsDictionary();
+        WordFinder finder = new WordFinder(dictionary);
+        return finder.findWords(board);
+    }
 
     private class AllStringsAreWordsDictionary implements Dictionary {
 
