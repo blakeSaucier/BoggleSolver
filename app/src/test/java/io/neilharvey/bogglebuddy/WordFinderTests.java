@@ -22,7 +22,7 @@ public class WordFinderTests {
                 "DABC", "DACB", "DBAC", "DBCA", "DCAB", "DCBA"
         };
 
-        String[] results = findAllWords(board);
+        String[] results = findAllWords(board, 1);
 
         assertItemsEqual(expected, results);
     }
@@ -32,15 +32,28 @@ public class WordFinderTests {
         char[][] board = new char[][]{{'A', 'A'}, {'A', 'A'}};
         String[] expected = {"A", "AA", "AAA", "AAAA" };
 
-        String[] results = findAllWords(board);
+        String[] results = findAllWords(board, 1);
 
         assertItemsEqual(expected, results);
     }
-//
-//    @Test
-//    public void onlyStringsLongerThanMinLengthAreReturned() {;
-//    }
-//
+
+    @Test
+    public void onlyStringsLongerThanMinLengthAreReturned() {
+        char[][] board = new char[][] {{'A', 'B'},{'C','D'}};
+        String[] expected = {
+                "ABC", "ABD", "ACB", "ACD", "ADB", "ADC", "BAC", "BAD", "BCA", "BCD", "BDA", "BDC",
+                "CAB", "CAD", "CBA", "CBD", "CDA", "CDB", "DAB", "DAC", "DBA", "DBC", "DCA", "DCB",
+                "ABCD", "ABDC", "ACBD", "ACDB", "ADBC", "ADCB",
+                "BACD", "BADC", "BCAD", "BCDA", "BDAC", "BDCA",
+                "CABD", "CADB", "CBAD", "CBDA", "CDAB", "CDBA",
+                "DABC", "DACB", "DBAC", "DBCA", "DCAB", "DCBA"
+        };
+
+        String[] results = findAllWords(board, 3);
+
+        assertItemsEqual(expected, results);
+    }
+
 //    @Test
 //    public void onlyWordsInDictionaryAreReturned() {
 //
@@ -53,9 +66,9 @@ public class WordFinderTests {
         assertArrayEquals(expected, results);
     }
 
-    private String[] findAllWords(char[][] board) {
+    private String[] findAllWords(char[][] board, int minLength) {
         Dictionary dictionary = new AllStringsAreWordsDictionary();
-        WordFinder finder = new WordFinder(dictionary);
+        WordFinder finder = new WordFinder(dictionary, minLength);
         return finder.findWords(board);
     }
 

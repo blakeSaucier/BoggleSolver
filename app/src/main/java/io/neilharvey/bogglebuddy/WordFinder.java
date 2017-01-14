@@ -6,11 +6,13 @@ import java.util.Vector;
 
 public class WordFinder {
 
-    private Dictionary dictionary;
+    private final Dictionary dictionary;
+    private final int minWordLength;
 
-    public WordFinder(Dictionary dictionary) {
+    public WordFinder(Dictionary dictionary, int minWordLength) {
 
         this.dictionary = dictionary;
+        this.minWordLength = minWordLength;
     }
 
     private static boolean[][] copyOf(boolean[][] original) {
@@ -43,7 +45,11 @@ public class WordFinder {
         currentWord += board[i][j];
 
         HashSet<String> words = new HashSet<>();
-        words.add(currentWord);
+
+        if(currentWord.length() >= minWordLength)
+        {
+            words.add(currentWord);
+        }
 
         for (int row = i - 1; row <= i + 1 && row < board.length; row++) {
             for (int col = j - 1; col <= j + 1 && col < board.length; col++) {
