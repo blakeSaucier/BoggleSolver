@@ -2,7 +2,6 @@ package io.neilharvey.bogglebuddy;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Vector;
 
 public class WordFinder {
 
@@ -46,8 +45,7 @@ public class WordFinder {
 
         HashSet<String> words = new HashSet<>();
 
-        if(currentWord.length() >= minWordLength)
-        {
+        if (currentWord.length() >= minWordLength && dictionary.IsWord(currentWord)) {
             words.add(currentWord);
         }
 

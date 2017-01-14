@@ -8,6 +8,12 @@ import static org.junit.Assert.assertArrayEquals;
 
 public class WordFinderTests {
 
+    private static void assertItemsEqual(String[] expected, String[] results) {
+        Arrays.sort(expected);
+        Arrays.sort(results);
+        assertArrayEquals(expected, results);
+    }
+
     @Test
     public void findsAllStringPermutationsInBoard() {
         char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
@@ -30,7 +36,7 @@ public class WordFinderTests {
     @Test
     public void onlyDistinctStringsAreReturned() {
         char[][] board = new char[][]{{'A', 'A'}, {'A', 'A'}};
-        String[] expected = {"A", "AA", "AAA", "AAAA" };
+        String[] expected = {"A", "AA", "AAA", "AAAA"};
 
         String[] results = findAllWords(board, 1);
 
@@ -39,7 +45,7 @@ public class WordFinderTests {
 
     @Test
     public void onlyStringsLongerThanMinLengthAreReturned() {
-        char[][] board = new char[][] {{'A', 'B'},{'C','D'}};
+        char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
         String[] expected = {
                 "ABC", "ABD", "ACB", "ACD", "ADB", "ADC", "BAC", "BAD", "BCA", "BCD", "BDA", "BDC",
                 "CAB", "CAD", "CBA", "CBD", "CDA", "CDB", "DAB", "DAC", "DBA", "DBC", "DCA", "DCB",
@@ -54,16 +60,16 @@ public class WordFinderTests {
         assertItemsEqual(expected, results);
     }
 
-//    @Test
-//    public void onlyWordsInDictionaryAreReturned() {
-//
-//    }
+    @Test
+    public void onlyWordsInDictionaryAreReturned() {
+        char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
+        String[] expected = {"BAD", "CAB", "CAD"};
+        Dictionary dictionary = new AllowedWordsDictionary("BAD", "CAB", "CAD", "ACE");
+        WordFinder wordFinder = new WordFinder(dictionary, 1);
 
+        String[] results = wordFinder.findWords(board);
 
-    private static void assertItemsEqual(String[] expected, String[] results) {
-        Arrays.sort(expected);
-        Arrays.sort(results);
-        assertArrayEquals(expected, results);
+        assertItemsEqual(expected, results);
     }
 
     private String[] findAllWords(char[][] board, int minLength) {
@@ -77,6 +83,20 @@ public class WordFinderTests {
         @Override
         public boolean IsWord(String word) {
             return true;
+        }
+    }
+
+    private class AllowedWordsDictionary implements Dictionary {
+
+        private final String[] allowedWords;
+
+        public AllowedWordsDictionary(String... allowedWords) {
+            this.allowedWords = allowedWords;
+        }
+
+        @Override
+        public boolean IsWord(String word) {
+            return Arrays.asList(allowedWords).contains(word);
         }
     }
 }
