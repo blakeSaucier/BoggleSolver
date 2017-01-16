@@ -64,7 +64,7 @@ public class WordFinderTests {
     public void onlyWordsInDictionaryAreReturned() {
         char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
         String[] expected = {"BAD", "CAB", "CAD"};
-        Dictionary dictionary = new AllowedWordsDictionary("BAD", "CAB", "CAD", "ACE");
+        Dictionary dictionary = new ArrayDictionary("BAD", "CAB", "CAD", "ACE");
         WordFinder wordFinder = new WordFinder(dictionary, 1);
 
         String[] results = wordFinder.findWords(board);
@@ -73,12 +73,12 @@ public class WordFinderTests {
     }
 
     private String[] findAllWords(char[][] board, int minLength) {
-        Dictionary dictionary = new AllStringsAreWordsDictionary();
+        Dictionary dictionary = new AlwaysTrueDictionary();
         WordFinder finder = new WordFinder(dictionary, minLength);
         return finder.findWords(board);
     }
 
-    private class AllStringsAreWordsDictionary implements Dictionary {
+    private class AlwaysTrueDictionary implements Dictionary {
 
         @Override
         public boolean IsWord(String word) {
@@ -86,11 +86,11 @@ public class WordFinderTests {
         }
     }
 
-    private class AllowedWordsDictionary implements Dictionary {
+    private class ArrayDictionary implements Dictionary {
 
         private final String[] allowedWords;
 
-        public AllowedWordsDictionary(String... allowedWords) {
+        public ArrayDictionary(String... allowedWords) {
             this.allowedWords = allowedWords;
         }
 
