@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -49,8 +50,19 @@ public class DatabaseDictionary implements Dictionary {
     }
 
     @Override
-    public boolean IsWord(String word) {
-        return false;
+    public boolean IsWord(String word){
+        String selection = KEY_WORD + " MATCH ?";
+        String[] selectionArgs = new String[] { word};
+        String[] columns = new String[] { KEY_WORD };
+        Cursor cursor = query(selection, selectionArgs, columns);
+
+        long words = DatabaseUtils.queryNumEntries(dictionaryOpenHelper.getReadableDatabase(), FTS_VIRTUAL_TABLE);
+        if(cursor != null) {
+            cursor.close();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private Cursor query(String selection, String[] selectionArgs, String[] columns) {
@@ -80,7 +92,6 @@ public class DatabaseDictionary implements Dictionary {
     private static class DictionaryOpenHelper extends SQLiteOpenHelper {
 
         private final Context helperContext;
-        private SQLiteDatabase database;
         private static final String FTS_TABLE_CREATE =
                 "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE +
                         " Using fts3 (" +
@@ -94,24 +105,23 @@ public class DatabaseDictionary implements Dictionary {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            database = db;
-            database.execSQL(FTS_TABLE_CREATE);
-            loadDictionary();
+            db.execSQL(FTS_TABLE_CREATE);
+            loadDictionary(db);
         }
 
-        private void loadDictionary() {
-            new Thread(new Runnable() {
-                public void run() {
+        private void loadDictionary(SQLiteDatabase db) {
+//            new Thread(new Runnable() {
+//                public void run() {
                     try {
-                        loadWords();
+                        loadWords(db);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                }
-            });
+//                }
+//            });
         }
 
-        private void loadWords() throws IOException {
+        private void loadWords(SQLiteDatabase db) throws IOException {
             Log.d(TAG, "Loading words...");
             final Resources resources = helperContext.getResources();
             InputStream inputStream = resources.openRawResource(R.raw.definitions);
@@ -122,7 +132,7 @@ public class DatabaseDictionary implements Dictionary {
                 while ((line = reader.readLine()) != null) {
                     String[] strings = TextUtils.split(line, "-");
                     if (strings.length < 2) continue;
-                    long id = addWord(strings[0].trim(), strings[1].trim());
+                    long id = addWord(db, strings[0].trim(), strings[1].trim());
                     if (id < 0) {
                         Log.e(TAG, "unable to add words: " + strings[0].trim());
                     }
@@ -133,11 +143,11 @@ public class DatabaseDictionary implements Dictionary {
             Log.d(TAG, "DONE loading words.");
         }
 
-        private long addWord(String word, String definition) {
+        private long addWord(SQLiteDatabase db, String word, String definition) {
             ContentValues values = new ContentValues();
             values.put(KEY_WORD, word);
             values.put(KEY_DEFINITION, definition);
-            return database.insert(FTS_VIRTUAL_TABLE, null, values);
+            return db.insert(FTS_VIRTUAL_TABLE, null, values);
         }
 
         @Override
