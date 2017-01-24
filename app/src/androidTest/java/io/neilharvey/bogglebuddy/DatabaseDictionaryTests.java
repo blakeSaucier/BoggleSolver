@@ -23,7 +23,7 @@ public class DatabaseDictionaryTests {
 
     @Test
     public void definedWordsAreRecognised() {
-        assertTrue(dictionary.IsWord("abbey"));
+        assertTrue(dictionary.IsWord("zoosperm"));
     }
 
     @Test

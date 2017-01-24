@@ -24,7 +24,6 @@ public class DatabaseDictionary implements Dictionary {
     private static final String TAG = "DatabaseDictionary";
 
     private static final String KEY_WORD = SearchManager.SUGGEST_COLUMN_TEXT_1;
-    private static final String KEY_DEFINITION = SearchManager.SUGGEST_COLUMN_TEXT_2;
 
     private static final String DATABASE_NAME = "dictionary";
     private static final String FTS_VIRTUAL_TABLE = "FTSdictionary";
@@ -36,7 +35,6 @@ public class DatabaseDictionary implements Dictionary {
     private static HashMap<String, String> buildColumnMap() {
         HashMap<String, String> map = new HashMap<>();
         map.put(KEY_WORD, KEY_WORD);
-        map.put(KEY_DEFINITION, KEY_DEFINITION);
         map.put(BaseColumns._ID, "rowid AS " + BaseColumns._ID);
         map.put(SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID, "rowid AS " +
                 SearchManager.SUGGEST_COLUMN_INTENT_DATA_ID);
@@ -94,9 +92,7 @@ public class DatabaseDictionary implements Dictionary {
         private final Context helperContext;
         private static final String FTS_TABLE_CREATE =
                 "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE +
-                        " Using fts3 (" +
-                        KEY_WORD + ", " +
-                        KEY_DEFINITION + ");";
+                        " Using fts3 (" + KEY_WORD + ");";
 
         public DictionaryOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -124,17 +120,15 @@ public class DatabaseDictionary implements Dictionary {
         private void loadWords(SQLiteDatabase db) throws IOException {
             Log.d(TAG, "Loading words...");
             final Resources resources = helperContext.getResources();
-            InputStream inputStream = resources.openRawResource(R.raw.definitions);
+            InputStream inputStream = resources.openRawResource(R.raw.wordlist);
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
             try {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    String[] strings = TextUtils.split(line, "-");
-                    if (strings.length < 2) continue;
-                    long id = addWord(db, strings[0].trim(), strings[1].trim());
+                    long id = addWord(db, line);
                     if (id < 0) {
-                        Log.e(TAG, "unable to add words: " + strings[0].trim());
+                        Log.e(TAG, "unable to add words: " + line);
                     }
                 }
             } finally {
@@ -143,10 +137,10 @@ public class DatabaseDictionary implements Dictionary {
             Log.d(TAG, "DONE loading words.");
         }
 
-        private long addWord(SQLiteDatabase db, String word, String definition) {
+        private long addWord(SQLiteDatabase db, String word) {
+            Log.d(TAG, "Adding word " + word);
             ContentValues values = new ContentValues();
             values.put(KEY_WORD, word);
-            values.put(KEY_DEFINITION, definition);
             return db.insert(FTS_VIRTUAL_TABLE, null, values);
         }
 
