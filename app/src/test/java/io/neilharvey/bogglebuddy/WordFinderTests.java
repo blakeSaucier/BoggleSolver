@@ -84,6 +84,11 @@ public class WordFinderTests {
         public boolean IsWord(String word) {
             return true;
         }
+
+        @Override
+        public boolean IsPrefix(String prefix) {
+            return true;
+        }
     }
 
     private class ArrayDictionary implements Dictionary {
@@ -97,6 +102,11 @@ public class WordFinderTests {
         @Override
         public boolean IsWord(String word) {
             return Arrays.asList(allowedWords).contains(word);
+        }
+
+        @Override
+        public boolean IsPrefix(String prefix) {
+            return true;
         }
     }
 }

@@ -23,11 +23,25 @@ public class DatabaseDictionaryTests {
 
     @Test
     public void definedWordsAreRecognised() {
+
         assertTrue(dictionary.IsWord("zoosperm"));
     }
 
     @Test
     public void undefinedWordsAreNotRecognised() {
+
         assertFalse(dictionary.IsWord("asdf"));
+    }
+
+    @Test
+    public void validPrefixesAreRecognised() {
+
+        assertTrue(dictionary.IsPrefix("zoo"));
+    }
+
+    @Test
+    public void invalidPrefixesAreNotRecognised() {
+
+        assertFalse(dictionary.IsPrefix("xyz"));
     }
 }

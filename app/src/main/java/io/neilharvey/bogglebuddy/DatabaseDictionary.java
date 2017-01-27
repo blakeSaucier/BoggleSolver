@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.provider.BaseColumns;
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -22,15 +21,17 @@ import java.util.HashMap;
 public class DatabaseDictionary implements Dictionary {
 
     private static final String TAG = "DatabaseDictionary";
-
     private static final String KEY_WORD = SearchManager.SUGGEST_COLUMN_TEXT_1;
-
     private static final String DATABASE_NAME = "dictionary";
     private static final String FTS_VIRTUAL_TABLE = "FTSdictionary";
     private static final int DATABASE_VERSION = 2;
+    private static final HashMap<String, String> columnMap = buildColumnMap();
 
     private final DictionaryOpenHelper dictionaryOpenHelper;
-    private static final HashMap<String, String> columnMap = buildColumnMap();
+
+    public DatabaseDictionary(Context context) {
+        dictionaryOpenHelper = new DictionaryOpenHelper(context);
+    }
 
     private static HashMap<String, String> buildColumnMap() {
         HashMap<String, String> map = new HashMap<>();
@@ -43,19 +44,24 @@ public class DatabaseDictionary implements Dictionary {
         return map;
     }
 
-    public DatabaseDictionary(Context context) {
-        dictionaryOpenHelper = new DictionaryOpenHelper(context);
+    @Override
+    public boolean IsWord(String word) {
+        String selection = KEY_WORD + " = ?";
+        return HasResults(word, selection);
     }
 
     @Override
-    public boolean IsWord(String word){
-        String selection = KEY_WORD + " MATCH ?";
-        String[] selectionArgs = new String[] { word};
-        String[] columns = new String[] { KEY_WORD };
+    public boolean IsPrefix(String prefix) {
+        String selection = KEY_WORD + " LIKE ?";
+        return HasResults(prefix + "%", selection);
+    }
+
+    private boolean HasResults(String word, String selection) {
+        String[] selectionArgs = new String[]{word};
+        String[] columns = new String[]{KEY_WORD};
         Cursor cursor = query(selection, selectionArgs, columns);
 
-        long words = DatabaseUtils.queryNumEntries(dictionaryOpenHelper.getReadableDatabase(), FTS_VIRTUAL_TABLE);
-        if(cursor != null) {
+        if (cursor != null) {
             cursor.close();
             return true;
         } else {
@@ -78,9 +84,9 @@ public class DatabaseDictionary implements Dictionary {
                 null
         );
 
-        if(cursor == null) {
+        if (cursor == null) {
             return null;
-        } else if(!cursor.moveToFirst()) {
+        } else if (!cursor.moveToFirst()) {
             cursor.close();
             return null;
         }
@@ -89,10 +95,10 @@ public class DatabaseDictionary implements Dictionary {
 
     private static class DictionaryOpenHelper extends SQLiteOpenHelper {
 
-        private final Context helperContext;
         private static final String FTS_TABLE_CREATE =
                 "CREATE VIRTUAL TABLE " + FTS_VIRTUAL_TABLE +
                         " Using fts3 (" + KEY_WORD + ");";
+        private final Context helperContext;
 
         public DictionaryOpenHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -108,11 +114,11 @@ public class DatabaseDictionary implements Dictionary {
         private void loadDictionary(SQLiteDatabase db) {
 //            new Thread(new Runnable() {
 //                public void run() {
-                    try {
-                        loadWords(db);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+            try {
+                loadWords(db);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 //                }
 //            });
         }

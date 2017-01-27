@@ -1,5 +1,7 @@
 package io.neilharvey.bogglebuddy;
 
+import android.util.Log;
+
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -44,6 +46,12 @@ public class WordFinder {
         currentWord += board[i][j];
 
         HashSet<String> words = new HashSet<>();
+
+        if (!dictionary.IsPrefix(currentWord)) {
+            return words;
+        }
+
+        Log.d("WordFinder", currentWord);
 
         if (currentWord.length() >= minWordLength && dictionary.IsWord(currentWord)) {
             words.add(currentWord);
