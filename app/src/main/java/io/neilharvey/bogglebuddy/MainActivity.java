@@ -2,8 +2,11 @@ package io.neilharvey.bogglebuddy;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListView;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,20 +38,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private WordFinder createWordFinder() {
-        Dictionary dictionary = new DatabaseDictionary(this.getApplicationContext());
+        TrieDictionary dictionary = new TrieDictionary();
+        try
+        {
+            dictionary.loadWords(this.getApplicationContext());
+        } catch(IOException ex)
+        {
+        }
         return new WordFinder(dictionary, MIN_WORD_LENGTH);
     }
 
     private static char[][] createBoard() {
-//        return new char[][] {
-//                {'A', 'B', 'C', 'D'},
-//                {'E', 'F', 'G', 'H'},
-//                {'I', 'J', 'K', 'L'},
-//                {'M', 'N', 'O', 'P'}
-//        };
         return new char[][] {
-                {'A','B'},
-                {'C','D'}
+                {'a', 'b', 'c', 'd'},
+                {'e', 'f', 'g', 'h'},
+                {'i', 'j', 'k', 'l'},
+                {'m', 'n', 'o', 'p'}
         };
     }
 }

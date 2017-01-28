@@ -1,24 +1,26 @@
 package io.neilharvey.bogglebuddy;
 
 import android.content.Context;
-import android.provider.ContactsContract;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
-public class DatabaseDictionaryTests {
+public class TrieDictionaryTests {
 
-    private DatabaseDictionary dictionary;
+    private TrieDictionary dictionary;
 
-    public DatabaseDictionaryTests() {
+    public TrieDictionaryTests() throws IOException {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        dictionary = new DatabaseDictionary(appContext);
+        dictionary = new TrieDictionary();
+        dictionary.loadWords(appContext);
     }
 
     @Test
@@ -30,13 +32,13 @@ public class DatabaseDictionaryTests {
     @Test
     public void undefinedWordsAreNotRecognised() {
 
-        assertFalse(dictionary.IsWord("asdf"));
+        assertFalse(dictionary.IsWord("abe"));
     }
 
     @Test
     public void validPrefixesAreRecognised() {
 
-        assertTrue(dictionary.IsPrefix("zoo"));
+        assertTrue(dictionary.IsPrefix("zoospe"));
     }
 
     @Test
