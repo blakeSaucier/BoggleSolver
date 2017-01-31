@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.ExpandableListView;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showWords(String[] words) {
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.expandableListView);
-        WordListAdapter listAdapter = new WordListAdapter(this.getApplicationContext(), words);
+        WordListAdapter listAdapter = WordListAdapter.create(this.getApplicationContext(), words);
         listView.setAdapter(listAdapter);
     }
 

@@ -8,23 +8,55 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Vector;
+
 public class WordListAdapter extends BaseExpandableListAdapter {
 
     private final Context context;
-    private final String[] words;
+    private final Integer[] groups;
+    private final HashMap<Integer, List<String>> words;
 
-    public WordListAdapter(Context context, String[] words) {
+    private WordListAdapter(Context context, Integer[] groups, HashMap<Integer, List<String>> words) {
         this.context = context;
+        this.groups = groups;
         this.words = words;
+    }
+
+    public static WordListAdapter create(Context context, String[] words) {
+
+        HashMap<Integer, List<String>> groupedWords = new HashMap<>();
+
+        for (String word : words) {
+            List<String> list;
+            int key = word.length();
+
+            if (groupedWords.containsKey(key)) {
+                list = groupedWords.get(key);
+            } else {
+                list = new Vector<String>();
+                groupedWords.put(key, list);
+            }
+
+            list.add(word);
+        }
+
+        Integer[] groupArray = groupedWords.keySet().toArray(new Integer[groupedWords.keySet().size()]);
+        Arrays.sort(groupArray);
+        return new WordListAdapter(context, groupArray, groupedWords);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return words[childPosititon];
+        int key = groups[groupPosition];
+        return words.get(key).get(childPosititon);
     }
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
+
         return childPosition;
     }
 
@@ -45,21 +77,25 @@ public class WordListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return words.length;
+        int key = groups[groupPosition];
+        return words.get(key).size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return "3 Letter Words";
+        int length = groups[groupPosition];
+        return length + " Letter Words";
     }
 
     @Override
     public int getGroupCount() {
-        return 1;
+
+        return groups.length;
     }
 
     @Override
     public long getGroupId(int groupPosition) {
+
         return groupPosition;
     }
 
@@ -81,11 +117,13 @@ public class WordListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
+
         return false;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
+
         return true;
     }
 
