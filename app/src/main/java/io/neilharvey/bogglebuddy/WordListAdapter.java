@@ -51,7 +51,7 @@ public class WordListAdapter extends BaseExpandableListAdapter {
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
         int key = groups[groupPosition];
-        return words.get(key).get(childPosititon);
+        return words.get(key).get(childPosititon).toUpperCase();
     }
 
     @Override

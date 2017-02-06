@@ -51,8 +51,6 @@ public class WordFinder {
             return words;
         }
 
-        Log.d("WordFinder", currentWord);
-
         if (currentWord.length() >= minWordLength && dictionary.IsWord(currentWord)) {
             words.add(currentWord);
         }
