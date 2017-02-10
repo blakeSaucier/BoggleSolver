@@ -3,15 +3,20 @@ package io.neilharvey.bogglebuddy;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class WordFinderTests {
 
-    private static void assertItemsEqual(String[] expected, String[] results) {
-        Arrays.sort(expected);
-        Arrays.sort(results);
-        assertArrayEquals(expected, results);
+    private static void assertItemsEqual(String[] expected, Set<Word> results) {
+        assertEquals(expected.length, results.size());
+        for (String string : expected) {
+            Word word = new Word(string, null);
+            assertTrue(word + " was not found in " + results, results.contains(word));
+        }
     }
 
     @Test
@@ -28,7 +33,7 @@ public class WordFinderTests {
                 "DABC", "DACB", "DBAC", "DBCA", "DCAB", "DCBA"
         };
 
-        String[] results = findAllWords(board, 1);
+        Set<Word> results = findAllWords(board, 1);
 
         assertItemsEqual(expected, results);
     }
@@ -38,7 +43,7 @@ public class WordFinderTests {
         char[][] board = new char[][]{{'A', 'A'}, {'A', 'A'}};
         String[] expected = {"A", "AA", "AAA", "AAAA"};
 
-        String[] results = findAllWords(board, 1);
+        Set<Word> results = findAllWords(board, 1);
 
         assertItemsEqual(expected, results);
     }
@@ -55,7 +60,7 @@ public class WordFinderTests {
                 "DABC", "DACB", "DBAC", "DBCA", "DCAB", "DCBA"
         };
 
-        String[] results = findAllWords(board, 3);
+        Set<Word> results = findAllWords(board, 3);
 
         assertItemsEqual(expected, results);
     }
@@ -64,21 +69,37 @@ public class WordFinderTests {
     public void onlyWordsInDictionaryAreReturned() {
         char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
         String[] expected = {"BAD", "CAB", "CAD"};
-        Dictionary dictionary = new ArrayDictionary("BAD", "CAB", "CAD", "ACE");
-        WordFinder wordFinder = new WordFinder(dictionary, 1);
+        Vocabulary vocabulary = new ArrayDictionary("BAD", "CAB", "CAD", "ACE");
+        WordFinder wordFinder = new WordFinder(vocabulary, 1);
 
-        String[] results = wordFinder.findWords(board);
+        Set<Word> results = wordFinder.findWords(board);
 
         assertItemsEqual(expected, results);
     }
 
-    private String[] findAllWords(char[][] board, int minLength) {
-        Dictionary dictionary = new AlwaysTrueDictionary();
-        WordFinder finder = new WordFinder(dictionary, minLength);
+    @Test
+    public void pathUsedToFindWordIsReturned() {
+        char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
+        Vocabulary vocabulary = new ArrayDictionary("BAD");
+        WordFinder wordFinder = new WordFinder(vocabulary, 3);
+
+        Set<Word> results = wordFinder.findWords(board);
+
+        assertEquals(1, results.size());
+        List<Point> path = results.iterator().next().getPath();
+        assertEquals(3, path.size());
+        assertEquals(new Point(0, 1), path.get(0));
+        assertEquals(new Point(0, 0), path.get(1));
+        assertEquals(new Point(1, 1), path.get(2));
+    }
+
+    private Set<Word> findAllWords(char[][] board, int minLength) {
+        Vocabulary vocabulary = new AlwaysTrueDictionary();
+        WordFinder finder = new WordFinder(vocabulary, minLength);
         return finder.findWords(board);
     }
 
-    private class AlwaysTrueDictionary implements Dictionary {
+    private class AlwaysTrueDictionary implements Vocabulary {
 
         @Override
         public boolean IsWord(String word) {
@@ -91,7 +112,7 @@ public class WordFinderTests {
         }
     }
 
-    private class ArrayDictionary implements Dictionary {
+    private class ArrayDictionary implements Vocabulary {
 
         private final String[] allowedWords;
 

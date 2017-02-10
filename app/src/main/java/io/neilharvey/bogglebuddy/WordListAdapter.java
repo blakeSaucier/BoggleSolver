@@ -11,32 +11,33 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 public class WordListAdapter extends BaseExpandableListAdapter {
 
     private final Context context;
     private final Integer[] groups;
-    private final HashMap<Integer, List<String>> words;
+    private final HashMap<Integer, List<Word>> words;
 
-    private WordListAdapter(Context context, Integer[] groups, HashMap<Integer, List<String>> words) {
+    private WordListAdapter(Context context, Integer[] groups, HashMap<Integer, List<Word>> words) {
         this.context = context;
         this.groups = groups;
         this.words = words;
     }
 
-    public static WordListAdapter create(Context context, String[] words) {
+    public static WordListAdapter create(Context context, Set<Word> words) {
 
-        HashMap<Integer, List<String>> groupedWords = new HashMap<>();
+        HashMap<Integer, List<Word>> groupedWords = new HashMap<>();
 
-        for (String word : words) {
-            List<String> list;
-            int key = word.length();
+        for (Word word : words) {
+            List<Word> list;
+            int key = word.toString().length();
 
             if (groupedWords.containsKey(key)) {
                 list = groupedWords.get(key);
             } else {
-                list = new Vector<String>();
+                list = new Vector<Word>();
                 groupedWords.put(key, list);
             }
 
@@ -51,7 +52,7 @@ public class WordListAdapter extends BaseExpandableListAdapter {
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
         int key = groups[groupPosition];
-        return words.get(key).get(childPosititon).toUpperCase();
+        return words.get(key).get(childPosititon).toString().toUpperCase();
     }
 
     @Override

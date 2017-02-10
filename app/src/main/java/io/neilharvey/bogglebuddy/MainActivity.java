@@ -13,6 +13,7 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String[] words = wordFinder.findWords(board);
+        Set<Word> words = wordFinder.findWords(board);
         showWords(words);
     }
 
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void showWords(String[] words) {
+    private void showWords(Set<Word> words) {
         ExpandableListView listView = (ExpandableListView) findViewById(R.id.expandableListView);
         WordListAdapter listAdapter = WordListAdapter.create(this.getApplicationContext(), words);
         listView.setAdapter(listAdapter);
@@ -135,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initWordFinder() {
-        TrieDictionary dictionary = new TrieDictionary();
+        TrieVocabulary dictionary = new TrieVocabulary();
         try {
             dictionary.loadWords(this.getApplicationContext());
         } catch (IOException ex) {

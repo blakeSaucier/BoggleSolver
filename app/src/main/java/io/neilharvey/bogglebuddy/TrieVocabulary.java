@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class TrieDictionary implements Dictionary {
+public class TrieVocabulary implements Vocabulary {
 
     private TrieNode root;
 
-    public TrieDictionary() {
+    public TrieVocabulary() {
         root = new TrieNode();
     }
 

@@ -15,11 +15,11 @@ import static junit.framework.Assert.assertTrue;
 @RunWith(AndroidJUnit4.class)
 public class TrieDictionaryTests {
 
-    private TrieDictionary dictionary;
+    private TrieVocabulary dictionary;
 
     public TrieDictionaryTests() throws IOException {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        dictionary = new TrieDictionary();
+        dictionary = new TrieVocabulary();
         dictionary.loadWords(appContext);
     }
 

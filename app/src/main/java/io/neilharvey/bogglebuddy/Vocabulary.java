@@ -1,6 +1,6 @@
 package io.neilharvey.bogglebuddy;
 
-public interface Dictionary {
+public interface Vocabulary {
 
     boolean IsWord(String word);
 
