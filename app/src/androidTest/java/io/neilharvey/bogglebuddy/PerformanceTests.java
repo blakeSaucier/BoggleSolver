@@ -21,8 +21,9 @@ public class PerformanceTests {
 
     private static void assertItemsEqual(String[] expected, Set<Word> results) {
         Assert.assertEquals(expected.length, results.size());
-        for(String word : expected) {
-            Assert.assertTrue(results.contains(word));
+        for (String string : expected) {
+            Word word = new Word(string, null);
+            Assert.assertTrue(word + " was not found in " + results, results.contains(word));
         }
     }
 
