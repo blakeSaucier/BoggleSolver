@@ -19,9 +19,10 @@ public class TrieNode {
         isWord = false;
     }
 
-    public TrieNode(final char letter) {
+    protected TrieNode(final char letter, TrieNode parent) {
         this();
         this.letter = letter;
+        this.parent = parent;
     }
 
     public void add(String word) {
@@ -30,8 +31,7 @@ public class TrieNode {
         int position = letter - 'a';
 
         if (children[position] == null) {
-            children[position] = new TrieNode(letter);
-            children[position].parent = this;
+            children[position] = new TrieNode(letter, this);
         }
 
         if (word.length() > 1) {
@@ -41,36 +41,44 @@ public class TrieNode {
         }
     }
 
-    public List<String> getWords() {
-        ArrayList<String> words = new ArrayList<>();
+//    public List<String> getWords() {
+//        ArrayList<String> words = new ArrayList<>();
+//
+//        if (isWord) {
+//            words.add(toString());
+//        }
+//
+//        if (!isLeaf) {
+//            for (int i = 0; i < children.length; i++) {
+//                if (children[i] != null) {
+//                    words.addAll(children[i].getWords());
+//                }
+//            }
+//        }
+//
+//        return words;
+//    }
 
-        if (isWord) {
-            words.add(toString());
-        }
+//    public boolean contains(final String value, boolean isWord)  {
+//
+//        TrieNode node = this;
+//        char[] letters = value.toCharArray();
+//        int i = 0;
+//
+//        while (i < letters.length && node.children[letters[i] - 'a'] != null) {
+//            node = node.children[letters[i] - 'a'];
+//            i++;
+//        }
+//
+//        return i == letters.length && (node.isWord || !isWord);
+//    }
 
-        if (!isLeaf) {
-            for (int i = 0; i < children.length; i++) {
-                if (children[i] != null) {
-                    words.addAll(children[i].getWords());
-                }
-            }
-        }
-
-        return words;
+    public TrieNode getChild(final char value) {
+        return this.children[value - 'a'];
     }
 
-    public boolean contains(final String value, boolean isWord)  {
-
-        TrieNode node = this;
-        char[] letters = value.toCharArray();
-        int i = 0;
-
-        while (i < letters.length && node.children[letters[i] - 'a'] != null) {
-            node = node.children[letters[i] - 'a'];
-            i++;
-        }
-
-        return i == letters.length && (node.isWord || !isWord);
+    public boolean isWord() {
+        return this.isWord;
     }
 
     @Override

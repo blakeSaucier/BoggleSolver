@@ -8,15 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class TrieVocabulary implements Vocabulary {
+public class TrieBuilder {
 
-    private TrieNode root;
-
-    public TrieVocabulary() {
-        root = new TrieNode();
-    }
-
-    public void loadWords(Context context) throws IOException {
+    public static TrieNode buildTrie(Context context) throws IOException {
+        TrieNode root = new TrieNode();
         final Resources resources = context.getResources();
         InputStream inputStream = resources.openRawResource(R.raw.wordlist);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -29,15 +24,7 @@ public class TrieVocabulary implements Vocabulary {
         } finally {
             reader.close();
         }
-    }
 
-    @Override
-    public boolean IsWord(String word) {
-        return root.contains(word, true);
-    }
-
-    @Override
-    public boolean IsPrefix(String prefix) {
-        return root.contains(prefix, false);
+        return root;
     }
 }

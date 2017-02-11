@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 public class WordFinderTests {
 
-    private static void assertItemsEqual(String[] expected, Set<Word> results) {
+    private static void assertItemsequal(String[] expected, Set<Word> results) {
         assertEquals(expected.length, results.size());
         for (String string : expected) {
             Word word = new Word(string, null);
@@ -20,67 +20,67 @@ public class WordFinderTests {
     }
 
     @Test
-    public void findsAllStringPermutationsInBoard() {
-        char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
+    public void findsAllStringPermutationsInboard() {
+        char[][] board = new char[][]{{'a', 'b'}, {'c', 'd'}};
         String[] expected = {
-                "A", "B", "C", "D",
-                "AB", "AC", "AD", "BA", "BC", "BD", "CA", "CB", "CD", "DA", "DB", "DC",
-                "ABC", "ABD", "ACB", "ACD", "ADB", "ADC", "BAC", "BAD", "BCA", "BCD", "BDA", "BDC",
-                "CAB", "CAD", "CBA", "CBD", "CDA", "CDB", "DAB", "DAC", "DBA", "DBC", "DCA", "DCB",
-                "ABCD", "ABDC", "ACBD", "ACDB", "ADBC", "ADCB",
-                "BACD", "BADC", "BCAD", "BCDA", "BDAC", "BDCA",
-                "CABD", "CADB", "CBAD", "CBDA", "CDAB", "CDBA",
-                "DABC", "DACB", "DBAC", "DBCA", "DCAB", "DCBA"
+                "a", "b", "c", "d",
+                "ab", "ac", "ad", "ba", "bc", "bd", "ca", "cb", "cd", "da", "db", "dc",
+                "abc", "abd", "acb", "acd", "adb", "adc", "bac", "bad", "bca", "bcd", "bda", "bdc",
+                "cab", "cad", "cba", "cbd", "cda", "cdb", "dab", "dac", "dba", "dbc", "dca", "dcb",
+                "abcd", "abdc", "acbd", "acdb", "adbc", "adcb",
+                "bacd", "badc", "bcad", "bcda", "bdac", "bdca",
+                "cabd", "cadb", "cbad", "cbda", "cdab", "cdba",
+                "dabc", "dacb", "dbac", "dbca", "dcab", "dcba"
         };
 
         Set<Word> results = findAllWords(board, 1);
 
-        assertItemsEqual(expected, results);
+        assertItemsequal(expected, results);
     }
 
     @Test
-    public void onlyDistinctStringsAreReturned() {
-        char[][] board = new char[][]{{'A', 'A'}, {'A', 'A'}};
-        String[] expected = {"A", "AA", "AAA", "AAAA"};
+    public void onlyDistinctStringsareReturned() {
+        char[][] board = new char[][]{{'a', 'a'}, {'a', 'a'}};
+        String[] expected = {"a", "aa", "aaa", "aaaa"};
 
         Set<Word> results = findAllWords(board, 1);
 
-        assertItemsEqual(expected, results);
+        assertItemsequal(expected, results);
     }
 
     @Test
-    public void onlyStringsLongerThanMinLengthAreReturned() {
-        char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
+    public void onlyStringsLongerThanMinLengthareReturned() {
+        char[][] board = new char[][]{{'a', 'b'}, {'c', 'd'}};
         String[] expected = {
-                "ABC", "ABD", "ACB", "ACD", "ADB", "ADC", "BAC", "BAD", "BCA", "BCD", "BDA", "BDC",
-                "CAB", "CAD", "CBA", "CBD", "CDA", "CDB", "DAB", "DAC", "DBA", "DBC", "DCA", "DCB",
-                "ABCD", "ABDC", "ACBD", "ACDB", "ADBC", "ADCB",
-                "BACD", "BADC", "BCAD", "BCDA", "BDAC", "BDCA",
-                "CABD", "CADB", "CBAD", "CBDA", "CDAB", "CDBA",
-                "DABC", "DACB", "DBAC", "DBCA", "DCAB", "DCBA"
+                "abc", "abd", "acb", "acd", "adb", "adc", "bac", "bad", "bca", "bcd", "bda", "bdc",
+                "cab", "cad", "cba", "cbd", "cda", "cdb", "dab", "dac", "dba", "dbc", "dca", "dcb",
+                "abcd", "abdc", "acbd", "acdb", "adbc", "adcb",
+                "bacd", "badc", "bcad", "bcda", "bdac", "bdca",
+                "cabd", "cadb", "cbad", "cbda", "cdab", "cdba",
+                "dabc", "dacb", "dbac", "dbca", "dcab", "dcba"
         };
 
         Set<Word> results = findAllWords(board, 3);
 
-        assertItemsEqual(expected, results);
+        assertItemsequal(expected, results);
     }
 
     @Test
     public void onlyWordsInDictionaryAreReturned() {
-        char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
-        String[] expected = {"BAD", "CAB", "CAD"};
-        Vocabulary vocabulary = new ArrayDictionary("BAD", "CAB", "CAD", "ACE");
-        WordFinder wordFinder = new WordFinder(vocabulary, 1);
+        char[][] board = new char[][]{{'a', 'b'}, {'c', 'd'}};
+        String[] expected = {"bad", "cab", "cad"};
+        TrieNode trie = createTrie("bad", "cab", "cad", "ace");
+        WordFinder wordFinder = new WordFinder(trie, 1);
 
         Set<Word> results = wordFinder.findWords(board);
 
-        assertItemsEqual(expected, results);
+        assertItemsequal(expected, results);
     }
 
     @Test
     public void pathUsedToFindWordIsReturned() {
-        char[][] board = new char[][]{{'A', 'B'}, {'C', 'D'}};
-        Vocabulary vocabulary = new ArrayDictionary("BAD");
+        char[][] board = new char[][]{{'a', 'b'}, {'c', 'd'}};
+        TrieNode vocabulary = createTrie("bad");
         WordFinder wordFinder = new WordFinder(vocabulary, 3);
 
         Set<Word> results = wordFinder.findWords(board);
@@ -94,40 +94,38 @@ public class WordFinderTests {
     }
 
     private Set<Word> findAllWords(char[][] board, int minLength) {
-        Vocabulary vocabulary = new AlwaysTrueDictionary();
+        TrieNode vocabulary = new GreedyTrie();
         WordFinder finder = new WordFinder(vocabulary, minLength);
         return finder.findWords(board);
     }
 
-    private class AlwaysTrueDictionary implements Vocabulary {
-
-        @Override
-        public boolean IsWord(String word) {
-            return true;
+    private TrieNode createTrie(String... allowedWords) {
+        TrieNode root = new TrieNode();
+        for (String word : allowedWords) {
+            root.add(word);
         }
-
-        @Override
-        public boolean IsPrefix(String prefix) {
-            return true;
-        }
+        return root;
     }
 
-    private class ArrayDictionary implements Vocabulary {
+    private class GreedyTrie extends TrieNode
+    {
+        public GreedyTrie()
+        {
+            super();
+        }
 
-        private final String[] allowedWords;
-
-        public ArrayDictionary(String... allowedWords) {
-            this.allowedWords = allowedWords;
+        public GreedyTrie(char letter, GreedyTrie parent) {
+            super(letter, parent);
         }
 
         @Override
-        public boolean IsWord(String word) {
-            return Arrays.asList(allowedWords).contains(word);
-        }
-
-        @Override
-        public boolean IsPrefix(String prefix) {
+        public boolean isWord() {
             return true;
+        }
+
+        @Override
+        public TrieNode getChild(char value) {
+            return new GreedyTrie(value, this);
         }
     }
 }

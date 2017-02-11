@@ -29,9 +29,8 @@ public class PerformanceTests {
     @Test(timeout = 5000)
     public void findsWordsWithinTargetTime() throws IOException {
         Context appContext = InstrumentationRegistry.getTargetContext();
-        TrieVocabulary dictionary = new TrieVocabulary();
-        dictionary.loadWords(appContext);
-        WordFinder wordFinder = new WordFinder(dictionary, 3);
+        TrieNode vocabulary = TrieBuilder.buildTrie(appContext);
+        WordFinder wordFinder = new WordFinder(vocabulary, 3);
         char[][] board = new char[][]{
                 {'a', 'b', 'c', 'd'},
                 {'e', 'f', 'g', 'h'},

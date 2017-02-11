@@ -136,11 +136,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initWordFinder() {
-        TrieVocabulary dictionary = new TrieVocabulary();
+        TrieNode vocabulary = null;
         try {
-            dictionary.loadWords(this.getApplicationContext());
+            vocabulary = TrieBuilder.buildTrie(getApplicationContext());
         } catch (IOException ex) {
         }
-        wordFinder = new WordFinder(dictionary, MIN_WORD_LENGTH);
+        wordFinder = new WordFinder(vocabulary, MIN_WORD_LENGTH);
     }
 }
