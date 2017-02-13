@@ -68,6 +68,12 @@ public class BoardFragment extends Fragment {
     private void setBoardCharacter(int id, int x, int y) {
         TextView text = (TextView) this.getActivity().findViewById(id);
         char character = Character.toUpperCase(board[x][y]);
-        text.setText(new char[]{character}, 0, 1);
+
+        if(character == 'Q') {
+            text.setText(new char[]{character, 'u'}, 0, 2);
+        } else {
+            text.setText(new char[]{character}, 0, 1);
+        }
+
     }
 }

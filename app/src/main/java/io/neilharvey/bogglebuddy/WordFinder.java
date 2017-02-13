@@ -33,7 +33,7 @@ public class WordFinder {
             for (int j = 0; j < size; j++) {
                 Vector<Point> path = new Vector<>();
                 path.add(new Point(i, j));
-                HashSet<Word> wordsFromHere = findWordsFrom(board, i, j, new boolean[size][size], trie, path);
+                HashSet<Word> wordsFromHere = findWords(board, i, j, new boolean[size][size], trie, path);
                 words.addAll(wordsFromHere);
             }
         }
@@ -41,12 +41,17 @@ public class WordFinder {
         return words;
     }
 
-    private HashSet<Word> findWordsFrom(char[][] board, int i, int j, boolean[][] visited, TrieNode node, List<Point> path) {
+    private HashSet<Word> findWords(char[][] board, int i, int j, boolean[][] visited, TrieNode node, List<Point> path) {
 
         boolean[][] localVisited = WordFinder.copyOf(visited);
         localVisited[i][j] = true;
-        TrieNode child = node.getChild(board[i][j]);
+        char letter = board[i][j];
+        TrieNode child = node.getChild(letter);
         HashSet<Word> words = new HashSet<>();
+
+        if(child != null && letter == 'q') {
+            child = child.getChild('u');
+        }
 
         if (child == null) {
             return words;
@@ -65,7 +70,7 @@ public class WordFinder {
                 if (row >= 0 && col >= 0 && !localVisited[row][col]) {
                     Vector<Point> pathFromHere = new Vector<>(path);
                     pathFromHere.add(new Point(row, col));
-                    HashSet<Word> wordsFromHere = findWordsFrom(board, row, col, localVisited, child, pathFromHere);
+                    HashSet<Word> wordsFromHere = findWords(board, row, col, localVisited, child, pathFromHere);
                     words.addAll(wordsFromHere);
                 }
             }

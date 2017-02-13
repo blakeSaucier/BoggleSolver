@@ -2,7 +2,6 @@ package io.neilharvey.bogglebuddy;
 
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 public class WordFinderTests {
 
-    private static void assertItemsequal(String[] expected, Set<Word> results) {
+    private static void assertWordsEqual(String[] expected, Set<Word> results) {
         assertEquals(expected.length, results.size());
         for (String string : expected) {
             Word word = new Word(string, null);
@@ -35,7 +34,7 @@ public class WordFinderTests {
 
         Set<Word> results = findAllWords(board, 1);
 
-        assertItemsequal(expected, results);
+        assertWordsEqual(expected, results);
     }
 
     @Test
@@ -45,7 +44,7 @@ public class WordFinderTests {
 
         Set<Word> results = findAllWords(board, 1);
 
-        assertItemsequal(expected, results);
+        assertWordsEqual(expected, results);
     }
 
     @Test
@@ -62,25 +61,25 @@ public class WordFinderTests {
 
         Set<Word> results = findAllWords(board, 3);
 
-        assertItemsequal(expected, results);
+        assertWordsEqual(expected, results);
     }
 
     @Test
     public void onlyWordsInDictionaryAreReturned() {
         char[][] board = new char[][]{{'a', 'b'}, {'c', 'd'}};
         String[] expected = {"bad", "cab", "cad"};
-        TrieNode trie = createTrie("bad", "cab", "cad", "ace");
+        TrieNode trie = createVocabulary("bad", "cab", "cad", "ace");
         WordFinder wordFinder = new WordFinder(trie, 1);
 
         Set<Word> results = wordFinder.findWords(board);
 
-        assertItemsequal(expected, results);
+        assertWordsEqual(expected, results);
     }
 
     @Test
     public void pathUsedToFindWordIsReturned() {
         char[][] board = new char[][]{{'a', 'b'}, {'c', 'd'}};
-        TrieNode vocabulary = createTrie("bad");
+        TrieNode vocabulary = createVocabulary("bad");
         WordFinder wordFinder = new WordFinder(vocabulary, 3);
 
         Set<Word> results = wordFinder.findWords(board);
@@ -93,15 +92,26 @@ public class WordFinderTests {
         assertEquals(new Point(1, 1), path.get(2));
     }
 
+    @Test
+    public void qIsTreatedAsQu() {
+        char[][] board = new char[][]{{'q','e'},{'e','n'}};
+        TrieNode vocabulary = createVocabulary("queen");
+        WordFinder wordFinder = new WordFinder(vocabulary, 3);
+
+        Set<Word> results = wordFinder.findWords(board);
+
+        assertWordsEqual(new String[] {"queen"}, results);
+    }
+
     private Set<Word> findAllWords(char[][] board, int minLength) {
         TrieNode vocabulary = new GreedyTrie();
         WordFinder finder = new WordFinder(vocabulary, minLength);
         return finder.findWords(board);
     }
 
-    private TrieNode createTrie(String... allowedWords) {
+    private TrieNode createVocabulary(String... words) {
         TrieNode root = new TrieNode();
-        for (String word : allowedWords) {
+        for (String word : words) {
             root.add(word);
         }
         return root;
