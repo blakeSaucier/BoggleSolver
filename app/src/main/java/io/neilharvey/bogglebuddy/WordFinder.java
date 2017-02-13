@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.Vector;
 
 public class WordFinder {
@@ -26,14 +27,14 @@ public class WordFinder {
 
     public Set<Word> findWords(char[][] board) {
 
-        HashSet<Word> words = new HashSet<>();
+        TreeSet<Word> words = new TreeSet<>();
         int size = board.length;
 
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 Vector<Point> path = new Vector<>();
                 path.add(new Point(i, j));
-                HashSet<Word> wordsFromHere = findWords(board, i, j, new boolean[size][size], trie, path);
+                TreeSet<Word> wordsFromHere = findWords(board, i, j, new boolean[size][size], trie, path);
                 words.addAll(wordsFromHere);
             }
         }
@@ -41,13 +42,13 @@ public class WordFinder {
         return words;
     }
 
-    private HashSet<Word> findWords(char[][] board, int i, int j, boolean[][] visited, TrieNode node, List<Point> path) {
+    private TreeSet<Word> findWords(char[][] board, int i, int j, boolean[][] visited, TrieNode node, List<Point> path) {
 
         boolean[][] localVisited = WordFinder.copyOf(visited);
         localVisited[i][j] = true;
         char letter = board[i][j];
         TrieNode child = node.getChild(letter);
-        HashSet<Word> words = new HashSet<>();
+        TreeSet<Word> words = new TreeSet<>();
 
         if(child != null && letter == 'q') {
             child = child.getChild('u');
@@ -70,7 +71,7 @@ public class WordFinder {
                 if (row >= 0 && col >= 0 && !localVisited[row][col]) {
                     Vector<Point> pathFromHere = new Vector<>(path);
                     pathFromHere.add(new Point(row, col));
-                    HashSet<Word> wordsFromHere = findWords(board, row, col, localVisited, child, pathFromHere);
+                    TreeSet<Word> wordsFromHere = findWords(board, row, col, localVisited, child, pathFromHere);
                     words.addAll(wordsFromHere);
                 }
             }

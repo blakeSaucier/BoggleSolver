@@ -2,6 +2,7 @@ package io.neilharvey.bogglebuddy;
 
 import org.junit.Test;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -101,6 +102,21 @@ public class WordFinderTests {
         Set<Word> results = wordFinder.findWords(board);
 
         assertWordsEqual(new String[] {"queen"}, results);
+    }
+
+    @Test
+    public void wordsAreReturnedInAlphabeticalOrder() {
+        char[][] board = new char[][] {{'d','c'},{'b','a'}};
+        TrieNode vocabulary = createVocabulary("bad", "cab", "cad", "abcd");
+        WordFinder wordFinder = new WordFinder(vocabulary, 3);
+
+        Set<Word> results = wordFinder.findWords(board);
+
+        Iterator<Word> it = results.iterator();
+        assertEquals("abcd", it.next().getWord());
+        assertEquals("bad", it.next().getWord());
+        assertEquals("cab", it.next().getWord());
+        assertEquals("cad", it.next().getWord());
     }
 
     private Set<Word> findAllWords(char[][] board, int minLength) {

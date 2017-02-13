@@ -2,7 +2,7 @@ package io.neilharvey.bogglebuddy;
 
 import java.util.List;
 
-public class Word {
+public class Word implements Comparable<Word> {
 
     private final String word;
     private final List<Point> path;
@@ -33,5 +33,10 @@ public class Word {
     @Override
     public int hashCode() {
         return word.hashCode();
+    }
+
+    @Override
+    public int compareTo(Word word) {
+        return getWord().compareTo(word.getWord());
     }
 }
