@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
             return;
         }
 
-        editText.setVisibility(View.GONE);
+        //editText.setVisibility(View.GONE);
         Set<Word> words = wordFinder.findWords(board.getBoard());
         showWords(words);
     }
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     public void onClick(View v) {
         board.clear();
         editText.setText("");
-        editText.setVisibility(View.VISIBLE);
+        //editText.setVisibility(View.VISIBLE);
         editText.requestFocus();
         wordListView.setVisibility(View.INVISIBLE);
     }
@@ -93,7 +93,8 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         String value = s.toString().toLowerCase();
-        for (int i = start; i < start + count; i++) {
+        board.clear();
+        for (int i = 0; i < s.length(); i++) {
             board.setLetter(i % 4, i / 4, value.charAt(i));
         }
     }
@@ -104,6 +105,11 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+        Log.d(TAG, "onEditorAction:actionId=" + actionId);
+        if(event != null) {
+            Log.d(TAG, "onEditorAction:keyEvent=" + event.getKeyCode());
+        }
 
         if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
             hideKeyboard(v);

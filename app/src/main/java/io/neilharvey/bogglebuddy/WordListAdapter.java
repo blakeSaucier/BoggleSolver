@@ -110,7 +110,6 @@ public class WordListAdapter extends BaseExpandableListAdapter {
         }
 
         TextView listGroupTextView = (TextView) convertView.findViewById(R.id.listGroupTextView);
-        listGroupTextView.setTypeface(null, Typeface.BOLD);
         listGroupTextView.setText(headerTitle);
 
         return convertView;
