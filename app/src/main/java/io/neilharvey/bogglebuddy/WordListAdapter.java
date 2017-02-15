@@ -52,7 +52,7 @@ public class WordListAdapter extends BaseExpandableListAdapter {
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
         int key = groups[groupPosition];
-        return words.get(key).get(childPosititon).toString().toUpperCase();
+        return words.get(key).get(childPosititon);
     }
 
     @Override
@@ -64,7 +64,8 @@ public class WordListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final Word childWord = (Word) getChild(groupPosition, childPosition);
+        final String childText = childWord.toString().toUpperCase();
 
         if (convertView == null) {
             LayoutInflater inflater = getLayoutInflater();

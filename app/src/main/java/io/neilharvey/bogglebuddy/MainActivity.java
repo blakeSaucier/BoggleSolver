@@ -19,7 +19,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.Set;
 
-public class MainActivity extends AppCompatActivity implements FloatingActionButton.OnClickListener, TextWatcher, EditText.OnEditorActionListener {
+public class MainActivity extends AppCompatActivity implements FloatingActionButton.OnClickListener, TextWatcher, EditText.OnEditorActionListener, ExpandableListView.OnChildClickListener {
 
     private static final String TAG = "MainActivity";
     private static final int MIN_WORD_LENGTH = 3;
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         editText.addTextChangedListener(this);
         editText.setOnEditorActionListener(this);
         wordListView = (ExpandableListView) findViewById(R.id.expandableListView);
+        wordListView.setOnChildClickListener(this);
         wordFinder = createWordFinder();
     }
 
@@ -65,11 +66,9 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
             return;
         }
 
-        //editText.setVisibility(View.GONE);
         Set<Word> words = wordFinder.findWords(board.getBoard());
         showWords(words);
     }
-
 
     private void showWords(Set<Word> words) {
         WordListAdapter listAdapter = WordListAdapter.create(this.getApplicationContext(), words);
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     public void onClick(View v) {
         board.clear();
         editText.setText("");
-        //editText.setVisibility(View.VISIBLE);
         editText.requestFocus();
         wordListView.setVisibility(View.INVISIBLE);
     }
@@ -124,5 +122,14 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     private void hideKeyboard(TextView v) {
         InputMethodManager in = (InputMethodManager) getSystemService(getApplicationContext().INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(v.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    @Override
+    public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+        WordListAdapter adapter = (WordListAdapter) parent.getExpandableListAdapter();
+        Word word = (Word)adapter.getChild(groupPosition, childPosition);
+        board.highlightWord(word);
+        return true;
     }
 }

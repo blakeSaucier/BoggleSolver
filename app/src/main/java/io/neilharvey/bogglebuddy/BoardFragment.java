@@ -2,9 +2,11 @@ package io.neilharvey.bogglebuddy;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
 public class BoardFragment extends Fragment {
@@ -20,8 +22,7 @@ public class BoardFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_board, container, false);
     }
 
@@ -46,34 +47,51 @@ public class BoardFragment extends Fragment {
         drawBoard();
     }
 
-    private void drawBoard() {
-        setBoardCharacter(R.id.a1, 0, 0);
-        setBoardCharacter(R.id.b1, 1, 0);
-        setBoardCharacter(R.id.c1, 2, 0);
-        setBoardCharacter(R.id.d1, 3, 0);
-        setBoardCharacter(R.id.a2, 0, 1);
-        setBoardCharacter(R.id.b2, 1, 1);
-        setBoardCharacter(R.id.c2, 2, 1);
-        setBoardCharacter(R.id.d2, 3, 1);
-        setBoardCharacter(R.id.a3, 0, 2);
-        setBoardCharacter(R.id.b3, 1, 2);
-        setBoardCharacter(R.id.c3, 2, 2);
-        setBoardCharacter(R.id.d3, 3, 2);
-        setBoardCharacter(R.id.a4, 0, 3);
-        setBoardCharacter(R.id.b4, 1, 3);
-        setBoardCharacter(R.id.c4, 2, 3);
-        setBoardCharacter(R.id.d4, 3, 3);
+    public void highlightWord(Word word) {
+
+        clearHighlight();
+        GridLayout grid = getGridLayout();
+        for (Point point : word.getPath()) {
+            int position = (4 * point.getCol()) + point.getRow();
+            TextView text = (TextView) grid.getChildAt(position);
+            int color = ContextCompat.getColor(getContext(), R.color.primary_light);
+            text.setBackgroundColor(color);
+        }
     }
 
-    private void setBoardCharacter(int id, int x, int y) {
-        TextView text = (TextView) this.getActivity().findViewById(id);
+    private GridLayout getGridLayout() {
+        return (GridLayout) this.getActivity().findViewById(R.id.board_grid);
+    }
+
+    public void clearHighlight() {
+
+        GridLayout grid = getGridLayout();
+        for (int position = 0; position < SIZE * SIZE; position++) {
+            TextView text = (TextView) grid.getChildAt(position);
+            int color = ContextCompat.getColor(getContext(), R.color.icons);
+            text.setBackgroundColor(color);
+        }
+    }
+
+    private void drawBoard() {
+
+        GridLayout grid = getGridLayout();
+
+        for (int i = 0; i < SIZE * SIZE; i++) {
+            TextView text = (TextView) grid.getChildAt(i);
+            int x = i % 4;
+            int y = i / 4;
+            setBoardCharacter(text, x, y);
+        }
+    }
+
+    private void setBoardCharacter(TextView text, int x, int y) {
         char character = Character.toUpperCase(board[x][y]);
 
-        if(character == 'Q') {
+        if (character == 'Q') {
             text.setText(new char[]{character, 'u'}, 0, 2);
         } else {
             text.setText(new char[]{character}, 0, 1);
         }
-
     }
 }
