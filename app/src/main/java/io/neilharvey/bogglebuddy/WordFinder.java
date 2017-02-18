@@ -33,7 +33,7 @@ public class WordFinder {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 Vector<Point> path = new Vector<>();
-                path.add(new Point(i, j));
+                path.add(new Point(j, i));
                 TreeSet<Word> wordsFromHere = findWords(board, i, j, new boolean[size][size], trie, path);
                 words.addAll(wordsFromHere);
             }
@@ -70,7 +70,7 @@ public class WordFinder {
             for (int col = j - 1; col <= j + 1 && col < board.length; col++) {
                 if (row >= 0 && col >= 0 && !localVisited[row][col]) {
                     Vector<Point> pathFromHere = new Vector<>(path);
-                    pathFromHere.add(new Point(row, col));
+                    pathFromHere.add(new Point(col, row));
                     TreeSet<Word> wordsFromHere = findWords(board, row, col, localVisited, child, pathFromHere);
                     words.addAll(wordsFromHere);
                 }

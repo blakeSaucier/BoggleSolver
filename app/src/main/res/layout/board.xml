@@ -21,7 +21,7 @@
             android:layout_margin="5px"
             android:background="#FFF"
             android:gravity="center"
-            android:text=""/>
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/b1"
@@ -31,7 +31,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/c1"
@@ -41,7 +42,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/d1"
@@ -51,7 +53,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/a2"
@@ -61,7 +64,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/b2"
@@ -71,7 +75,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/c2"
@@ -81,7 +86,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/d2"
@@ -91,7 +97,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/a3"
@@ -101,7 +108,9 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"
+            />
 
         <TextView
             android:id="@+id/b3"
@@ -111,7 +120,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/c3"
@@ -121,7 +131,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/d3"
@@ -131,7 +142,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/a4"
@@ -141,7 +153,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/b4"
@@ -151,7 +164,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/c4"
@@ -161,7 +175,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/d4"
@@ -171,7 +186,8 @@
             android:layout_gravity="fill_horizontal"
             android:layout_margin="5px"
             android:background="#FFF"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:visibility="invisible"/>
 
     </GridLayout>
 </RelativeLayout>

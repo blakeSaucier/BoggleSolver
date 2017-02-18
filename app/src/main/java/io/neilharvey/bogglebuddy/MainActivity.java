@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     private static final String TAG = "MainActivity";
     private static final int MIN_WORD_LENGTH = 3;
     private WordFinder wordFinder;
-    private BoardFragment board;
+    private Board board;
     private EditText editText;
     private ExpandableListView wordListView;
 
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        board = (BoardFragment) getSupportFragmentManager().findFragmentById(R.id.board);
+        board = (Board) findViewById(R.id.board);
         editText = (EditText) findViewById(R.id.editText);
         editText.addTextChangedListener(this);
         editText.setOnEditorActionListener(this);
@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
             return;
         }
 
-        Set<Word> words = wordFinder.findWords(board.getBoard());
+        char[][] letters = board.getLetters();
+        Set<Word> words = wordFinder.findWords(letters);
         showWords(words);
     }
 
@@ -103,11 +104,6 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-        Log.d(TAG, "onEditorAction:actionId=" + actionId);
-        if(event != null) {
-            Log.d(TAG, "onEditorAction:keyEvent=" + event.getKeyCode());
-        }
 
         if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
             hideKeyboard(v);
