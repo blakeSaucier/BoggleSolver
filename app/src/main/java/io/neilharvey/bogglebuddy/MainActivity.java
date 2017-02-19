@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements FloatingActionBut
         }
 
         return false;
-
     }
 
     private void hideKeyboard(TextView v) {

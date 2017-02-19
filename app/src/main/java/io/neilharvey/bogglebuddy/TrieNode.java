@@ -41,38 +41,6 @@ public class TrieNode {
         }
     }
 
-//    public List<String> getWords() {
-//        ArrayList<String> words = new ArrayList<>();
-//
-//        if (isWord) {
-//            words.add(toString());
-//        }
-//
-//        if (!isLeaf) {
-//            for (int i = 0; i < children.length; i++) {
-//                if (children[i] != null) {
-//                    words.addAll(children[i].getWords());
-//                }
-//            }
-//        }
-//
-//        return words;
-//    }
-
-//    public boolean contains(final String value, boolean isWord)  {
-//
-//        TrieNode node = this;
-//        char[] letters = value.toCharArray();
-//        int i = 0;
-//
-//        while (i < letters.length && node.children[letters[i] - 'a'] != null) {
-//            node = node.children[letters[i] - 'a'];
-//            i++;
-//        }
-//
-//        return i == letters.length && (node.isWord || !isWord);
-//    }
-
     public TrieNode getChild(final char value) {
         return this.children[value - 'a'];
     }

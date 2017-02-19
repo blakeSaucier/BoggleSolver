@@ -1,7 +1,6 @@
 package io.neilharvey.bogglebuddy;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +56,6 @@ public class WordListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public long getChildId(int groupPosition, int childPosition) {
-
         return childPosition;
     }
 
@@ -91,13 +89,11 @@ public class WordListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-
         return groups.length;
     }
 
     @Override
     public long getGroupId(int groupPosition) {
-
         return groupPosition;
     }
 
@@ -118,13 +114,11 @@ public class WordListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean hasStableIds() {
-
         return false;
     }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-
         return true;
     }
 

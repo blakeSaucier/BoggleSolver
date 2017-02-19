@@ -17,7 +17,8 @@ public class Board extends GridLayout {
 
     private final String TAG = "Board";
     private final int SIZE = 4;
-    private GridLayout gridLayout;
+    private final float MARGIN = 5;
+
     private char[][] letters = new char[SIZE][SIZE];
     private List<Point> wordPath;
     private Path arrowPath;
@@ -34,9 +35,7 @@ public class Board extends GridLayout {
 
     private void init() {
         inflate(getContext(), R.layout.board, this);
-        gridLayout = (GridLayout) findViewById(R.id.board_grid);
         setWillNotDraw(false);
-        setChildrenDrawingOrderEnabled(true);
 
         int highlightColor = ContextCompat.getColor(getContext(), R.color.primary);
         highlightPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -63,7 +62,7 @@ public class Board extends GridLayout {
     public void setLetter(int x, int y, char letter) {
         letters[x][y] = letter;
         clearHighlight();
-        drawBoard();
+        invalidate();
     }
 
     public boolean isValid() {
@@ -79,18 +78,7 @@ public class Board extends GridLayout {
 
     public void clear() {
         letters = new char[SIZE][SIZE];
-        drawBoard();
-    }
-
-    private void drawBoard() {
-
-        for (int i = 0; i < SIZE * SIZE; i++) {
-            TextView text = (TextView) gridLayout.getChildAt(i);
-            int x = i % 4;
-            int y = i / 4;
-            setBoardCharacter(text, x, y);
-        }
-
+        clearHighlight();
         invalidate();
     }
 
@@ -128,19 +116,19 @@ public class Board extends GridLayout {
     }
 
     private float getTop(Point point) {
-        return (height * point.getRow()) / SIZE;
+        return ((height * point.getRow()) / SIZE) + MARGIN;
     }
 
     private float getLeft(Point point) {
-        return (width * point.getCol()) / SIZE;
+        return ((width * point.getCol()) / SIZE) + MARGIN;
     }
 
     private float getBottom(Point point) {
-        return (height * (1 + point.getRow())) / SIZE;
+        return ((height * (1 + point.getRow())) / SIZE) - MARGIN;
     }
 
     private float getRight(Point point) {
-        return (width * (1 + point.getCol())) / SIZE;
+        return ((width * (1 + point.getCol())) / SIZE) - MARGIN;
     }
 
     public void clearHighlight() {
