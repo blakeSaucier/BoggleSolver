@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
-    tools:context="io.neilharvey.bogglebuddy.BoardFragment">
+    tools:context="io.neilharvey.bogglesolver.BoardFragment">
 
     <GridLayout
         android:id="@+id/board_grid"

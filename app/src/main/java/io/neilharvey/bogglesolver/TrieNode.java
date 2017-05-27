@@ -1,9 +1,4 @@
-package io.neilharvey.bogglebuddy;
-
-import android.util.Log;
-
-import java.util.ArrayList;
-import java.util.List;
+package io.neilharvey.bogglesolver;
 
 public class TrieNode {
 

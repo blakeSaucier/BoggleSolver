@@ -1,4 +1,4 @@
-package io.neilharvey.bogglebuddy;
+package io.neilharvey.bogglesolver;
 
 import android.content.Context;
 import android.content.res.Resources;

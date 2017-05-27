@@ -1,4 +1,4 @@
-package io.neilharvey.bogglebuddy;
+package io.neilharvey.bogglesolver;
 
 import org.junit.Test;
 

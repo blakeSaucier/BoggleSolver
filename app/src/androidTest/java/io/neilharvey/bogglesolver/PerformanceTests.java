@@ -1,4 +1,4 @@
-package io.neilharvey.bogglebuddy;
+package io.neilharvey.bogglesolver;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;

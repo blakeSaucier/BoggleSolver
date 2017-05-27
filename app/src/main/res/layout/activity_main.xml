@@ -43,7 +43,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <io.neilharvey.bogglebuddy.Board
+            <io.neilharvey.bogglesolver.Board
                 android:id="@+id/board"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
